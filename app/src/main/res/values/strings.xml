@@ -12,4 +12,5 @@
   <string name="widget_title">Today\'s Market</string>
   <string name="network_toast">Uh-oh! This app requires an internet connection</string>
   <string name="empty_string">No Weather Information Available</string>
+  <string name="no_internet">No Internet Connection</string>
 </resources>

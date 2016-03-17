@@ -13,7 +13,7 @@
       />
   <TextView
       android:id="@+id/recycler_view_empty"
-      android:text="No data to display."
+      android:text="@string/empty_string"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"/>
 

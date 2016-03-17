@@ -1,15 +1,22 @@
 package com.sam_chordas.android.stockhawk.ui;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.TextView;
+
+import com.sam_chordas.android.stockhawk.R;
 
 /**
  * Created by LIANG on 3/17/2016.
  */
 public class EmptyRecyclerView extends RecyclerView {
+    private Context mContext;
     private View emptyView;
+    boolean isConnected;
     final private AdapterDataObserver observer = new AdapterDataObserver() {
         @Override
         public void onChanged() {
@@ -41,8 +48,27 @@ public class EmptyRecyclerView extends RecyclerView {
 
     void checkIfEmpty() {
         if (emptyView != null && getAdapter() != null) {
-            final boolean emptyViewVisible = getAdapter().getItemCount() == 0;
-            emptyView.setVisibility(emptyViewVisible ? VISIBLE : GONE);
+            mContext = getContext();
+            TextView tv = (TextView) emptyView;
+            ConnectivityManager cm =
+                    (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+            isConnected = activeNetwork != null &&
+                    activeNetwork.isConnectedOrConnecting();
+            if (getAdapter().getItemCount() == 0){
+                tv.setText(R.string.empty_string);
+                emptyView.setVisibility(VISIBLE);
+            }
+            else if(!isConnected){
+                tv.setText(R.string.no_internet);
+                emptyView.setVisibility(VISIBLE);
+            }
+            else{
+                emptyView.setVisibility(GONE);
+            }
+
+//            final boolean emptyViewVisible = getAdapter().getItemCount() == 0;
+//            emptyView.setVisibility(emptyViewVisible ? VISIBLE : GONE);
 //            setVisibility(emptyViewVisible ? GONE : VISIBLE);
         }
     }
